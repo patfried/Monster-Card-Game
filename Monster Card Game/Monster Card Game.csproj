@@ -6,4 +6,8 @@
     <RootNamespace>Monster_Card_Game</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Monster\" />
+  </ItemGroup>
+
 </Project>
