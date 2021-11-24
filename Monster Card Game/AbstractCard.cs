@@ -9,10 +9,12 @@ namespace Monster_Card_Game
     abstract class AbstractCard
     {
         public string CardName;
-        public int CardDamage;
+        public static int CardDamage;
         public enum Element
         {
-            NORMAL,FIRE,ICE
+            NORMAL,FIRE,WATER
         }
+        public Element CardElement;
+        public string CardType;
     }
 }

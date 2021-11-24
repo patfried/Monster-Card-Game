@@ -15,8 +15,9 @@ namespace Monster_Card_Game
             Console.WriteLine(Pole.UserPassword);
             Console.WriteLine(Pole.UserCoins);
 
-            NormalGoblin A = new NormalGoblin();
+            NormalDragon A = new NormalDragon();
 
+            A.Created();
         }
     }
 }
