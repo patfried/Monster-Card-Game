@@ -6,20 +6,17 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game
 {
-    class NormalGoblin : AbstractCard
+    class NormalWizzard : AbstractCard
     {
-        public NormalGoblin()
+        
+        NormalWizzard()
         {
-            CardName = "Goblin";
-            CardDamage = 100;
+            CardName = "Wizzard";
+            CardDamage = 30;
             CardElement = Element.NORMAL;
             CardType = "Monster";
-            
         }
 
-        public void Created()
-        {
-            Console.WriteLine("Goblin was created sucsessfully!");
-        }
+   
     }
 }

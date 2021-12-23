@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using System;
+using System.Collections.Generic;
 
 namespace Monster_Card_Game
 {
@@ -9,16 +11,14 @@ namespace Monster_Card_Game
             User Pole = new User();
             Pole.UserName = "Patrick";
             Pole.UserPassword = "12345";
-            Pole.UserCoins = 100;
+            Pole.BuyPacks();
+            Pole.CreateBattledeck();
 
-            Console.WriteLine(Pole.UserName);
-            Console.WriteLine(Pole.UserPassword);
-            Console.WriteLine(Pole.UserCoins);
-
-            NormalDragon A = new NormalDragon();
-
-            A.Created();
-        }
+        
+            //Console.WriteLine(Collection[0].CardName);
+            
+           
+    }
     }
 }
 
