@@ -20,14 +20,14 @@ namespace Monster_Card_Game
             CardCollection = new List<ICard>();
         }
 
-        public void BuyPacks()
+        public void BuyPack()
         {
-            UserCoins = -20;
+            UserCoins = -5;
 
             var Rand = new Random();
             int RandNumber;
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 5; i++)
             {
                 RandNumber = Rand.Next(0, 3);
                 switch (RandNumber)

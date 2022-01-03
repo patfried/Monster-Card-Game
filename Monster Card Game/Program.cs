@@ -9,16 +9,22 @@ namespace Monster_Card_Game
         static void Main(string[] args)
         {
             User Pole = new User();
+            User Enemy = new User();
+
             Pole.UserName = "Patrick";
             Pole.UserPassword = "12345";
-            Pole.BuyPacks();
-            Pole.CreateBattledeck();
+            Pole.BuyPack();
+            Enemy.BuyPack();
+            Battle Battle = new Battle();
 
-        
-            //Console.WriteLine(Collection[0].CardName);
-            
-           
-    }
+            Battle.StartBattle(Pole, Enemy);
+            //Pole.CreateBattledeck();
+            //Enemy.CreateBattledeck();
+
+            //Console.WriteLine(Pole.CardCollection[0].CardName);
+
+
+        }
     }
 }
 

@@ -19,5 +19,13 @@ namespace Monster_Card_Game
         {
             Console.WriteLine("Fire_Spell was created sucsessfully!");
         }
+        public void CheckElement(AbstractCard Enemy)
+        {
+            if (Enemy.CardElement == Element.WATER)
+            {
+                Console.WriteLine("Fire is not effective against Water!");
+                CardDamage /=  2;
+            }
+        }
     }
 }
