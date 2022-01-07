@@ -20,9 +20,6 @@ namespace Monster_Card_Game
         public string CardType { get; set; }
         ICard.Element ICard.CardElement { get => throw new NotImplementedException(); set => throw new NotImplementedException(); } // TODO herausfinden warum!!!
 
-        public void Created()
-        {
-            Console.WriteLine($"{CardName} was created sucsessfully!");
-        }
+       
     }
 }

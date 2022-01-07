@@ -15,9 +15,6 @@ namespace Monster_Card_Game
             CardElement = Element.NORMAL;
             CardType = "Spell";
         }
-        public void Created()
-        {
-            Console.WriteLine("Spell was created sucsessfully!");
-        }
+      
     }
 }

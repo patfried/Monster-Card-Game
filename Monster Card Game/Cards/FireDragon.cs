@@ -4,18 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Monster_Card_Game
+namespace Monster_Card_Game.Cards
 {
-    class NormalDragon : AbstractCard
+    class FireDragon : AbstractCard
     {
-        public NormalDragon()
+        public FireDragon()
         {
-            CardName = "Dragon";
+            CardName = "Fire_Dragon";
             CardDamage = 100;
-            CardElement = Element.NORMAL;
+            CardElement = Element.FIRE;
             CardType = "Monster";
         }
-
         public void CheckElve(AbstractCard Enemy)
         {
             if (Enemy.CardName == "Fire_Elve")

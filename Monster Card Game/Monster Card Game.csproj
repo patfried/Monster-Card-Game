@@ -6,4 +6,8 @@
     <RootNamespace>Monster_Card_Game</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="6.0.2" />
+  </ItemGroup>
+
 </Project>

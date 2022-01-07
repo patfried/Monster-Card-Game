@@ -8,42 +8,119 @@ namespace Monster_Card_Game
 {
     class Battle
     {
+        int MaxRounds = 100;
+        int PlayedRounds = 0;
+        bool GameOver = false;
 
         public void StartBattle(User Player1, User Player2)
         {
-            for (int i = 0; i < 5; i++)
-            {
-                DetWinner(Player1, Player2, i);
-            }
-            Console.WriteLine("Battle Ended!");
-        }
+            User Player1tmp = Player1;
+            User Player2tmp = Player2;
 
-        public void DetWinner(User Player1, User Player2, int index)
-        {
-            if (Player1.CardCollection[index].CardDamage > Player2.CardCollection[index].CardDamage)
+            while (PlayedRounds < MaxRounds || GameOver == false)
             {
-                Console.WriteLine($"{Player1.CardCollection[index].CardName} won!");
-                /* Player1.CardCollection.Add(Player2.CardCollection[index]);
-                 Player2.CardCollection.Remove(Player2.CardCollection[index]);
-                 Console.WriteLine($"{Player2.CardCollection[index].CardName} was removed!"); */
+                ICard Player1Card = Player1tmp.PickRandomCard();
+                ICard Player2Card = Player2tmp.PickRandomCard();
+
+                if(Player1Card.CardType == Player2Card.CardType) // Monster vs Monster
+                {
+                    if (Player1Card.CardDamage > Player2Card.CardDamage)
+                    {
+                        Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player1Card, false);
+                        Player1tmp.CardCollection.Add(Player2Card);
+                        Player2tmp.CardCollection.Remove(Player2Card);
+
+                    }
+                    else
+                    {
+                        Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player2Card, false);
+                        Player2tmp.CardCollection.Add(Player1Card);
+                        Player1tmp.CardCollection.Remove(Player1Card);
+
+                    }
+                    if (Player1Card.CardDamage == Player2Card.CardDamage)
+                    {
+                        Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player2Card, true);
+                    }
+
+                    if (Player1tmp.CardCollection.Count == 0)
+                    {
+                        Console.WriteLine("Spiel vorbei Spieler 2 hat gewonnen");
+                        GameOver = true;
+                        Player2.Elo += 10;
+                        Player1.Elo -= 10;
+                        break;
+                    }
+                    else if (Player2tmp.CardCollection.Count == 0)
+                    {
+                        Console.WriteLine("Spiel vorbei Spieler 1 hat gewonnen");
+                        GameOver = true;
+                        Player1.Elo += 10;
+                        Player2.Elo -= 10;
+                        break;
+                    }
+                    PlayedRounds++;
+                }
+                else    // Spell vs Spell or Monster vs Spell
+                {
+                    
+                        if (Player1Card.CardDamage > Player2Card.CardDamage) // Palyer 1 Wins
+                        {
+                            Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player1Card, false);
+                            Player1tmp.CardCollection.Add(Player2Card);
+                            Player2tmp.CardCollection.Remove(Player2Card);
+                        }
+                        else                                                 // Player 2 Wins 
+                        {
+                            Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player2Card, false);
+                            Player2tmp.CardCollection.Add(Player1Card);
+                            Player1tmp.CardCollection.Remove(Player1Card);
+                        }
+                        if (Player1Card.CardDamage == Player2Card.CardDamage) // Draw
+                        {
+                            Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player2Card, true);
+                        }
+
+                        if (Player1tmp.CardCollection.Count == 0)
+                        {
+                            Console.WriteLine("Spiel vorbei Spieler 2 hat gewonnen");
+                            GameOver = true;
+                            Player2.Elo += 10;
+                            Player1.Elo -= 10;
+
+                            break;
+                        }
+                        else if (Player2tmp.CardCollection.Count == 0)
+                        {
+                            Console.WriteLine("Spiel vorbei Spieler 1 hat gewonnen");
+                            GameOver = true;
+                            Player1.Elo += 10;
+                            Player2.Elo -= 10;
+                            break;
+                        }
+                        PlayedRounds++;                   
+                }
+               
+            }
+            
+        }
+        private void Battlelog(User Player1, User Player2, ICard Player1Card, ICard Player2Card, ICard Winner, bool Draw)
+        {
+            if(Draw == false)
+            {
+                Console.WriteLine($"{Player1.UserName}: {Player1Card.CardName}({Player1Card.CardDamage}) vs {Player2.UserName}: {Player2Card.CardName}({Player2Card.CardDamage}) => {Player1Card.CardDamage} vs {Player2Card.CardDamage} => {Winner.CardName} wins");
             }
             else
             {
-                Console.WriteLine($"{Player2.CardCollection[index].CardName} won!");
-                /* Player2.CardCollection.Add(Player1.CardCollection[index]);
-                 Player1.CardCollection.Remove(Player1.CardCollection[index]);
-                 Console.WriteLine($"{Player1.CardCollection[index].CardName} was removed!");*/
-            }
-            if (Player1.CardCollection[index].CardDamage == Player2.CardCollection[index].CardDamage)
-            {
-                Console.WriteLine("Both Cards have the Same Damage! It´s a DRAW!!!!");
+                Console.WriteLine($"{Player1.UserName}: {Player1Card.CardName}({Player1Card.CardDamage}) vs {Player2.UserName}: {Player2Card.CardName}({Player2Card.CardDamage}) => {Player1Card.CardDamage} vs {Player2Card.CardDamage} => Draw");
             }
         }
 
-        // gewinner bekommt die Karte vom Verlierer // index out of bound wenn nur einer verwendet wird vlt 2 seperate indexe innerhalb der collection führen
-        // Scoreboard updaten
-        // draw beachten
-        // Gewinner ermitteln mittels Punkte 
+
+        
+        
+        
+       
 
     }
 }

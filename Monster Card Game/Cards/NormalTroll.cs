@@ -4,19 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Monster_Card_Game
+namespace Monster_Card_Game.Cards
 {
-    class NormalWizzard : AbstractCard
+    class NormalTroll : AbstractCard
     {
-        
-        public NormalWizzard()
+        public NormalTroll()
         {
-            CardName = "Wizzard";
-            CardDamage = 30;
+            CardName = "Troll";
+            CardDamage = 70;
             CardElement = Element.NORMAL;
             CardType = "Monster";
         }
-
-   
     }
 }

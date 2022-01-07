@@ -15,10 +15,7 @@ namespace Monster_Card_Game
             CardElement = Element.FIRE;
             CardType = "Spell";
         }
-        public void Created()
-        {
-            Console.WriteLine("Fire_Spell was created sucsessfully!");
-        }
+        
         public void CheckElement(AbstractCard Enemy)
         {
             if (Enemy.CardElement == Element.WATER)

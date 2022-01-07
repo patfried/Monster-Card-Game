@@ -15,10 +15,7 @@ namespace Monster_Card_Game
             CardElement = Element.WATER;
             CardType = "Spell";
         }
-        public void Created()
-        {
-            Console.WriteLine("Water_Spell was created sucsessfully!");
-        }
+       
 
         public void CheckElement(AbstractCard Enemy)
         {

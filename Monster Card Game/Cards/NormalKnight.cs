@@ -4,24 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Monster_Card_Game
+namespace Monster_Card_Game.Cards
 {
-    class NormalDragon : AbstractCard
+    class NormalKnight : AbstractCard
     {
-        public NormalDragon()
+        public NormalKnight()
         {
-            CardName = "Dragon";
-            CardDamage = 100;
+            CardName = "Knight";
+            CardDamage = 75;
             CardElement = Element.NORMAL;
             CardType = "Monster";
         }
 
-        public void CheckElve(AbstractCard Enemy)
+        public void CheckWaterSpell(AbstractCard Enemy)
         {
-            if (Enemy.CardName == "Fire_Elve")
+            if (Enemy.CardName == "Water_Spell")
             {
                 CardDamage = 0;
             }
+
         }
     }
 }

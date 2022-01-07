@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Monster_Card_Game
+namespace Monster_Card_Game.Cards
 {
-    class NormalDragon : AbstractCard
+    class WaterDragon : AbstractCard
     {
-        public NormalDragon()
+        public WaterDragon()
         {
-            CardName = "Dragon";
+            CardName = "Water_Dragon";
             CardDamage = 100;
-            CardElement = Element.NORMAL;
+            CardElement = Element.WATER;
             CardType = "Monster";
         }
 
