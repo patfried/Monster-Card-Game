@@ -10,9 +10,10 @@ namespace Monster_Card_Game.Cards
     {
         public FireDragon()
         {
+            CardClass = "Dragon";
             CardName = "Fire_Dragon";
             CardDamage = 100;
-            CardElement = Element.FIRE;
+            CardElement = 1;
             CardType = "Monster";
         }
         public void CheckElve(AbstractCard Enemy)

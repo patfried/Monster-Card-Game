@@ -10,9 +10,10 @@ namespace Monster_Card_Game.Cards
     {
         public FireTroll()
         {
+            CardClass = "Troll";
             CardName = "Fire_Troll";
             CardDamage = 70;
-            CardElement = Element.FIRE;
+            CardElement = 1;
             CardType = "Monster";
         }
     }

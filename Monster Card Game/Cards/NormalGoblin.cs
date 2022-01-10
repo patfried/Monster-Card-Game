@@ -7,21 +7,22 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game
 {
-    class NormalGoblin : AbstractCard
+    public class NormalGoblin : AbstractCard
     {
 
         public NormalGoblin()
         {
-            CardName = "Goblin";
+            CardClass = "Goblin";
+            CardName = "Normal_Goblin";
             CardDamage = 50;
-            CardElement = Element.NORMAL;
+            CardElement = 0;
             CardType = "Monster";
             
         }
 
         public void CheckDragon(AbstractCard Enemy)
         {
-            if(Enemy.CardName == "Dragon" || Enemy.CardName == "Fire_Dragon" || Enemy.CardName == "Water_Dragon")
+            if(Enemy.CardClass == "Dragon")
             {
                 CardDamage = 0;
             }

@@ -10,9 +10,10 @@ namespace Monster_Card_Game.Cards
     {
         public FireOrk()
         {
+            CardClass = "Ork";
             CardName = "Fire_Ork";
             CardDamage = 80;
-            CardElement = Element.FIRE;
+            CardElement = 1;
             CardType = "Monster";
         }
         public void CheckWizzard(AbstractCard Enemy)

@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game.Cards
 {
-    class FireElve : AbstractCard
+    public class FireElve : AbstractCard
     {
         public FireElve()
         {
+            CardClass = "Elve";
             CardName = "Fire_Elve";
             CardDamage = 60;
-            CardElement = Element.FIRE;
+            CardElement = 1;
             CardType = "Monster";
         }
     }

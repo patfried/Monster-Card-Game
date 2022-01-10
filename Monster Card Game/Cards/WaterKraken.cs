@@ -10,9 +10,10 @@ namespace Monster_Card_Game.Cards
     {
         public WaterKraken()
         {
+            CardClass = "Kraken";
             CardName = "Water_Kraken";
             CardDamage = 125;
-            CardElement = Element.WATER;
+            CardElement = 2;
             CardType = "Monster";
         }
     }

@@ -6,15 +6,25 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game
 {
-    class NormalSpell : AbstractCard
+    public class NormalSpell : AbstractCard
     {
         public NormalSpell()
         {
+            CardClass = "Spell";
             CardName = "Normal_Spell";
-            CardDamage = 20;
-            CardElement = Element.NORMAL;
+            CardDamage = 40;
+            CardElement = 0;
             CardType = "Spell";
         }
-      
-    }
+
+        public void CheckKraken(AbstractCard Enemy)
+        {
+            if (Enemy.CardClass == "Kraken")
+            {
+                CardDamage = 0;
+            }
+        }
+         
+
+}
 }

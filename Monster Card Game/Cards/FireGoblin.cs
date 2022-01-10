@@ -6,19 +6,20 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game.Cards
 {
-    class FireGoblin : AbstractCard
+    public class FireGoblin : AbstractCard
     {
         public FireGoblin()
         {
+            CardClass = "Goblin";
             CardName = "Fire_Goblin";
             CardDamage = 50;
-            CardElement = Element.FIRE;
+            CardElement = 1;
             CardType = "Monster";
 
         }
         public void CheckDragon(AbstractCard Enemy)
         {
-            if (Enemy.CardName == "Dragon" || Enemy.CardName == "Fire_Dragon" || Enemy.CardName == "Water_Dragon")
+            if (Enemy.CardClass == "Dragon")
             {
                 CardDamage = 0;
             }

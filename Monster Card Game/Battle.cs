@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game
 {
-    class Battle
+    public class Battle
     {
         int MaxRounds = 100;
         int PlayedRounds = 0;
@@ -22,20 +22,21 @@ namespace Monster_Card_Game
                 ICard Player1Card = Player1tmp.PickRandomCard();
                 ICard Player2Card = Player2tmp.PickRandomCard();
 
-                if(Player1Card.CardType == Player2Card.CardType) // Monster vs Monster
+                if(Player1Card.CardType == "´Monster" && Player2Card.CardType== "Monster") // Monster vs Monster
                 {
+
                     if (Player1Card.CardDamage > Player2Card.CardDamage)
                     {
                         Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player1Card, false);
-                        Player1tmp.CardCollection.Add(Player2Card);
-                        Player2tmp.CardCollection.Remove(Player2Card);
+                        Player1tmp.BattleDeck.Add(Player2Card);
+                        Player2tmp.BattleDeck.Remove(Player2Card);
 
                     }
                     else
                     {
                         Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player2Card, false);
-                        Player2tmp.CardCollection.Add(Player1Card);
-                        Player1tmp.CardCollection.Remove(Player1Card);
+                        Player2tmp.BattleDeck.Add(Player1Card);
+                        Player1tmp.BattleDeck.Remove(Player1Card);
 
                     }
                     if (Player1Card.CardDamage == Player2Card.CardDamage)
@@ -43,22 +44,28 @@ namespace Monster_Card_Game
                         Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player2Card, true);
                     }
 
-                    if (Player1tmp.CardCollection.Count == 0)
+                    if (Player1tmp.BattleDeck.Count == 0)
                     {
                         Console.WriteLine("Spiel vorbei Spieler 2 hat gewonnen");
                         GameOver = true;
-                        Player2.Elo += 10;
-                        Player1.Elo -= 10;
+                        Player2.Elo += 3;
+                        Player2.MatchesWon++;
+                        Player1.Elo -= 5;
+                        Player1.MatchesLost++;
                         break;
                     }
-                    else if (Player2tmp.CardCollection.Count == 0)
+                    else if (Player2tmp.BattleDeck.Count == 0)
                     {
                         Console.WriteLine("Spiel vorbei Spieler 1 hat gewonnen");
                         GameOver = true;
-                        Player1.Elo += 10;
-                        Player2.Elo -= 10;
+                        Player1.Elo += 3;
+                        Player1.MatchesWon++;
+                        Player2.Elo -= 5;
+                        Player2.MatchesLost++;
                         break;
                     }
+                    Player1.WLRatio();
+                    Player2.WLRatio();
                     PlayedRounds++;
                 }
                 else    // Spell vs Spell or Monster vs Spell
@@ -67,21 +74,21 @@ namespace Monster_Card_Game
                         if (Player1Card.CardDamage > Player2Card.CardDamage) // Palyer 1 Wins
                         {
                             Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player1Card, false);
-                            Player1tmp.CardCollection.Add(Player2Card);
-                            Player2tmp.CardCollection.Remove(Player2Card);
+                            Player1tmp.BattleDeck.Add(Player2Card);
+                            Player2tmp.BattleDeck.Remove(Player2Card);
                         }
                         else                                                 // Player 2 Wins 
                         {
                             Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player2Card, false);
-                            Player2tmp.CardCollection.Add(Player1Card);
-                            Player1tmp.CardCollection.Remove(Player1Card);
+                            Player2tmp.BattleDeck.Add(Player1Card);
+                            Player1tmp.BattleDeck.Remove(Player1Card);
                         }
                         if (Player1Card.CardDamage == Player2Card.CardDamage) // Draw
                         {
                             Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player2Card, true);
                         }
 
-                        if (Player1tmp.CardCollection.Count == 0)
+                        if (Player1tmp.BattleDeck.Count == 0)
                         {
                             Console.WriteLine("Spiel vorbei Spieler 2 hat gewonnen");
                             GameOver = true;
@@ -90,7 +97,7 @@ namespace Monster_Card_Game
 
                             break;
                         }
-                        else if (Player2tmp.CardCollection.Count == 0)
+                        else if (Player2tmp.BattleDeck.Count == 0)
                         {
                             Console.WriteLine("Spiel vorbei Spieler 1 hat gewonnen");
                             GameOver = true;
@@ -116,10 +123,9 @@ namespace Monster_Card_Game
             }
         }
 
-
         
         
-        
+      
        
 
     }

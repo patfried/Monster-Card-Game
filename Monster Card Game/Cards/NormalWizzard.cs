@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game
 {
-    class NormalWizzard : AbstractCard
+    public class NormalWizzard : AbstractCard
     {
         
         public NormalWizzard()
         {
-            CardName = "Wizzard";
+            CardClass = "Wizzard";
+            CardName = "Normal_Wizzard";
             CardDamage = 30;
-            CardElement = Element.NORMAL;
+            CardElement = 0;
             CardType = "Monster";
         }
 

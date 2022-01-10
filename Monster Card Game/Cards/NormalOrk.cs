@@ -6,19 +6,20 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game.Cards
 {
-    class NormalOrk : AbstractCard
+    public class NormalOrk : AbstractCard
     {
         public NormalOrk()
         {
-            CardName = "Ork";
+            CardClass = "Ork";
+            CardName = "Normal_Ork";
             CardDamage = 80;
-            CardElement = Element.NORMAL;
+            CardElement = 0;
             CardType = "Monster";
         }
 
         public void CheckWizzard(AbstractCard Enemy)
         {
-            if (Enemy.CardName == "Wizzard" || Enemy.CardName == "Fire_Wizzard" || Enemy.CardName == "Water_Wizzard")
+            if (Enemy.CardName == "Normal_Wizzard" || Enemy.CardName == "Fire_Wizzard" || Enemy.CardName == "Water_Wizzard")
                 {
                     CardDamage = 0;
                 }

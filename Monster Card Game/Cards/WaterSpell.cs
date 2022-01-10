@@ -6,23 +6,27 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game
 {
-    class WaterSpell : AbstractCard
+    public class WaterSpell : AbstractCard
     {
         public WaterSpell()
         {
+            CardClass = "Spell";
             CardName = "Water_Spell";
             CardDamage = 40;
-            CardElement = Element.WATER;
+            CardElement = 2;
             CardType = "Spell";
         }
-       
 
         public void CheckElement(AbstractCard Enemy)
         {
-            if (Enemy.CardElement == Element.FIRE)
+            if (Enemy.CardElement == 1)
             {
-                Console.WriteLine("Water is effective against fire!");
                 CardDamage *= 2;
+            }
+
+            if (Enemy.CardClass == "Kraken")
+            {
+                CardDamage = 0;
             }
         }
     }
