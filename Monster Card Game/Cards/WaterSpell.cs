@@ -15,6 +15,7 @@ namespace Monster_Card_Game
             CardDamage = 40;
             CardElement = 2;
             CardType = "Spell";
+            CardResetdmg = 40;
         }
 
         public void CheckElement(AbstractCard Enemy)

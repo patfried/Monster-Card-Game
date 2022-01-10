@@ -15,6 +15,7 @@ namespace Monster_Card_Game
             CardDamage = 40;
             CardElement = 0;
             CardType = "Spell";
+            CardResetdmg = 40;
         }
 
         public void CheckKraken(AbstractCard Enemy)

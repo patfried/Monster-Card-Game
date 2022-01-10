@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game.Cards
 {
-    class FireDragon : AbstractCard
+    public class FireDragon : AbstractCard
     {
-        public FireDragon()
+        public  FireDragon()
         {
             CardClass = "Dragon";
             CardName = "Fire_Dragon";
             CardDamage = 100;
             CardElement = 1;
             CardType = "Monster";
+            CardResetdmg = 100;
         }
         public void CheckElve(AbstractCard Enemy)
         {

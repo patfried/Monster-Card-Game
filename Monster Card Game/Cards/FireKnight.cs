@@ -13,8 +13,9 @@ namespace Monster_Card_Game.Cards
             CardClass = "Knight";
             CardName = "Fire_Knight";
             CardDamage = 75;
-            CardElement = 1; // Feuer
+            CardElement = 1; 
             CardType = "Monster";
+            CardResetdmg = 75;
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Monster_Card_Game.Cards
             CardDamage = 80;
             CardElement = 0;
             CardType = "Monster";
+            CardResetdmg = 80;
         }
 
         public void CheckWizzard(AbstractCard Enemy)

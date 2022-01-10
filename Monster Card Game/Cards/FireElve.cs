@@ -15,6 +15,7 @@ namespace Monster_Card_Game.Cards
             CardDamage = 60;
             CardElement = 1;
             CardType = "Monster";
+            CardResetdmg = 60;
         }
     }
 }

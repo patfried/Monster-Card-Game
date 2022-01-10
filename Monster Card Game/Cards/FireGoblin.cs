@@ -15,6 +15,7 @@ namespace Monster_Card_Game.Cards
             CardDamage = 50;
             CardElement = 1;
             CardType = "Monster";
+            CardResetdmg = 50;
 
         }
         public void CheckDragon(AbstractCard Enemy)

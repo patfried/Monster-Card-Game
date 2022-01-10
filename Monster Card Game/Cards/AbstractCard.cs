@@ -18,8 +18,8 @@ namespace Monster_Card_Game
         }
         public int CardElement { get; set; }
         public string CardType { get; set; }
-        //ICard.Element ICard.CardElement { get => throw new NotImplementedException(); set => throw new NotImplementedException(); } // TODO herausfinden warum!!!
-
+        
+        public int CardResetdmg { get; set; }
        
     }
 }

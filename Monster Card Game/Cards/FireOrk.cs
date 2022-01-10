@@ -15,10 +15,11 @@ namespace Monster_Card_Game.Cards
             CardDamage = 80;
             CardElement = 1;
             CardType = "Monster";
+            CardResetdmg = 80;
         }
         public void CheckWizzard(AbstractCard Enemy)
         {
-            if (Enemy.CardName == "Wizzard" || Enemy.CardName == "Fire_Wizzard" || Enemy.CardName == "Water_Wizzard")
+            if (Enemy.CardClass == "Wizzard")
             {
                 CardDamage = 0;
             }

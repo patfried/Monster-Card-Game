@@ -85,12 +85,14 @@ namespace Monster_Card_Game
             User oldUser = null;
             bool alreadyexist = Reader.HasRows; // check if column is empty
 
-            if (alreadyexist == true)
+
+            if (alreadyexist)
             {
                 Console.WriteLine($"User {Username} exists!");
 
                 string name, password;
-                int coins, elo;
+                int coins, elo, matcheswon, matcheslost;
+                double wlratio;
 
                 while(Reader.Read()) // As long as the Reader is reading entrys
                 {
@@ -98,10 +100,13 @@ namespace Monster_Card_Game
                     password = Reader.GetString(2);
                     coins = Reader.GetInt32(3);
                     elo = Reader.GetInt32(4);
+                    matcheswon = Reader.GetInt32(5);
+                    matcheslost = Reader.GetInt32(6);
+                    wlratio = Reader.GetDouble(7);
 
                     name = string.Join("", name.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
 
-                    oldUser = new User(name, password, coins, elo);
+                    oldUser = new User(name, password, coins, elo, matcheswon, matcheslost, wlratio);
                 }
 
                 return oldUser;
@@ -121,17 +126,14 @@ namespace Monster_Card_Game
             List<string> tmpCards = new List<string>();
 
             Console.WriteLine("SCOREBOARD:");
-            Console.WriteLine(" Username  Elo  Matches Won  Matches Lost  ");
+            Console.WriteLine(" Username  Elo  MatchesWon  MatchesLost  ");
             while(Reader.Read())
             {
                 tmpCards.Add(Reader.GetString(0));
-                Console.WriteLine($"{Reader.GetString(0)}  {Reader.GetInt16(1)}  {Reader.GetInt16(2)}  {Reader.GetInt16(3)}  {Reader.GetDouble(4)}  ");
+                Console.WriteLine($"{Reader.GetString(0)}  {Reader.GetInt16(1)}  {Reader.GetInt16(2)}  {Reader.GetInt16(3)}    ");
             }
             
-            foreach(string Cards in tmpCards)
-            {
-                Console.WriteLine(Cards);
-            }
+            
 
         }
     }

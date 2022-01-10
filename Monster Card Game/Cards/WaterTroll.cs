@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game.Cards
 {
-    class WaterTroll : AbstractCard
+    public class WaterTroll : AbstractCard
     {
         public WaterTroll()
         {
@@ -15,6 +15,7 @@ namespace Monster_Card_Game.Cards
             CardDamage = 70;
             CardElement = 2;
             CardType = "Monster";
+            CardResetdmg = 70;
         }
     }
 }

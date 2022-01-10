@@ -35,18 +35,24 @@ namespace Monster_Card_Game
             InsertUserintoDB();
         }
 
-        public User(string Username, string Password, int Coins, int Elodb) // Used when Login User in 
+        public User(string Username, string Password, int Coins, int Elodb, int matcheswon,int matcheslost, double wlratio) // Used when Login User in 
         {
             
             UserName = Username;
             UserPassword = Password;
             UserCoins = Coins;
             Elo = Elodb;
+            MatchesWon = matcheswon;
+            MatchesLost = matcheslost;
+            WinLossRatio = wlratio;
+            CardCollection = new List<ICard>();
+            BattleDeck = new List<ICard>();
+
         }
 
         public void BuyPacks()
         {
-            UserCoins = -20;
+            UserCoins -= 20;
 
             var Rand = new Random();
             int RandNumber;
@@ -201,22 +207,22 @@ namespace Monster_Card_Game
             
         }
 
-        public double WLRatio()
+        public void WLRatio()
         {
-            return MatchesWon / MatchesLost;
+            this.WinLossRatio = MatchesWon / MatchesLost;
         }
 
         public ICard PickRandomCard()
         {
             var Rand = new Random();
             int RandNumber;
-            int Battledecklenght = BattleDeck.Count;
+            int Battledecklenght = BattleDeck.Count();
 
             RandNumber = Rand.Next(0, Battledecklenght);
 
             ICard RandomCard = BattleDeck.ElementAt(RandNumber);
 
-            Console.WriteLine(RandomCard.CardName);
+            
 
             return RandomCard;
         }
@@ -261,7 +267,7 @@ namespace Monster_Card_Game
         {
             Database Connection = new Database();
 
-            var sql = $" UPDATE people SET name=@1, password=@2, coins=@3, elo=@4, matcheswon=@5, matcheslost=@6, winlossratio=@7  WHERE name='{this.UserName}'"; //prepare / TODO UserNamen ersetzen da er sonst nach dem neuen namen Eintrag sucht der nicht vorhanden ist
+            var sql = $" UPDATE people SET name=@1, password=@2, coins=@3, elo=@4, matcheswon=@5, matcheslost=@6  WHERE name='{this.UserName}'"; //prepare / TODO UserNamen ersetzen da er sonst nach dem neuen namen Eintrag sucht der nicht vorhanden ist
             using var query = new NpgsqlCommand(sql, Connection.Connection);
 
             query.Parameters.AddWithValue("@1", this.UserName);                          // fill in 
@@ -270,7 +276,7 @@ namespace Monster_Card_Game
             query.Parameters.AddWithValue("@4", this.Elo);
             query.Parameters.AddWithValue("@5", this.MatchesWon);
             query.Parameters.AddWithValue("@6", this.MatchesLost);
-            query.Parameters.AddWithValue("@7", this.WinLossRatio);
+            
             query.Prepare();
 
             query.ExecuteNonQuery();                                                     //execute
@@ -290,7 +296,7 @@ namespace Monster_Card_Game
             if(doesexist)
             {
                 Database newConnection = new Database();
-                sql = $" DELETE FROM people WHERE name = '{this.UserName}'"; //prepare
+                sql = $" DELETE FROM people WHERE name = '{this.UserName}'"; 
                 using var newquery = new NpgsqlCommand(sql, newConnection.Connection);
                 newquery.ExecuteNonQuery();
                 newConnection.Connection.Close();
@@ -352,6 +358,7 @@ namespace Monster_Card_Game
         }
         public void CreateStackFromDB()
         {
+            
             Database Connection = new Database();
             var sql = $"SELECT cardname FROM stack WHERE username='{this.UserName}'";
             using var query = new NpgsqlCommand(sql, Connection.Connection);
@@ -481,6 +488,143 @@ namespace Monster_Card_Game
                         break;
                 }
                 
+            }
+            Console.WriteLine("Databsecards");
+            Connection.Connection.Close();
+        }
+
+        public void CreateBattledeckFromDB()
+        {
+
+            Database Connection = new Database();
+            var sql = $"SELECT cardname FROM battledeck WHERE username='{this.UserName}'";
+            using var query = new NpgsqlCommand(sql, Connection.Connection);
+            using NpgsqlDataReader Reader = query.ExecuteReader();
+            List<string> tmpCards = new List<string>();
+            string tmpname;
+
+            while (Reader.Read())
+            {
+                tmpname = Reader.GetString(0);
+                tmpname = string.Join("", tmpname.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
+                tmpCards.Add(tmpname);
+            }
+
+            foreach (string Cards in tmpCards)
+            {
+
+                switch (Cards)
+                {
+                    case "Normal_Goblin":
+                        NormalGoblin Goblin = new NormalGoblin();
+                        BattleDeck.Add(Goblin);
+                        break;
+                    case "Water_Goblin":
+                        WaterGoblin Water_Goblin = new WaterGoblin();
+                        BattleDeck.Add(Water_Goblin);
+                        break;
+                    case "Fire_Goblin":
+                        FireGoblin Fire_Goblin = new FireGoblin();
+                        BattleDeck.Add(Fire_Goblin);
+                        break;
+                    case "Normal_Dragon":
+                        NormalDragon Dragon = new NormalDragon();
+                        BattleDeck.Add(Dragon);
+                        break;
+                    case "Water_Dragon":
+                        WaterDragon Water_Dragon = new WaterDragon();
+                        BattleDeck.Add(Water_Dragon);
+                        break;
+                    case "Fire_Dragon":
+                        FireDragon Fire_Dragon = new FireDragon();
+                        BattleDeck.Add(Fire_Dragon);
+                        break;
+                    case "Normal Wizzard":
+                        NormalWizzard Wizzard = new NormalWizzard();
+                        BattleDeck.Add(Wizzard);
+                        break;
+                    case "Water_Wizzard":
+                        WaterWizzard Water_Wizzard = new WaterWizzard();
+                        BattleDeck.Add(Water_Wizzard);
+                        break;
+                    case "Fire_Wizzard":
+                        FireWizzard Fire_Wizzard = new FireWizzard();
+                        BattleDeck.Add(Fire_Wizzard);
+                        break;
+                    case "Normal_Ork":
+                        NormalOrk Ork = new NormalOrk();
+                        BattleDeck.Add(Ork);
+                        break;
+                    case "Water_Ork":
+                        WaterOrk Water_Ork = new WaterOrk();
+                        BattleDeck.Add(Water_Ork);
+                        break;
+                    case "Fire_Ork":
+                        FireOrk Fire_Ork = new FireOrk();
+                        BattleDeck.Add(Fire_Ork);
+                        break;
+                    case "Normal_Knight":
+                        NormalKnight Knight = new NormalKnight();
+                        BattleDeck.Add(Knight);
+                        break;
+                    case "Water_Knight":
+                        WaterKnight Water_Knight = new WaterKnight();
+                        BattleDeck.Add(Water_Knight);
+                        break;
+                    case "Fire_Knight":
+                        FireKnight Fire_Knight = new FireKnight();
+                        BattleDeck.Add(Fire_Knight);
+                        break;
+                    case "Normal_Kraken":
+                        NormalKraken Kraken = new NormalKraken();
+                        BattleDeck.Add(Kraken);
+                        break;
+                    case "Fire_Kraken":
+                        FireKraken Fire_Kraken = new FireKraken();
+                        BattleDeck.Add(Fire_Kraken);
+                        break;
+                    case "Water_Kraken":
+                        WaterKraken Water_Kraken = new WaterKraken();
+                        BattleDeck.Add(Water_Kraken);
+                        break;
+                    case "Normal_Elve":
+                        NormalElve Elve = new NormalElve();
+                        BattleDeck.Add(Elve);
+                        break;
+                    case "Water_Elve":
+                        WaterElve Water_Elve = new WaterElve();
+                        BattleDeck.Add(Water_Elve);
+                        break;
+                    case "Fire_Elve":
+                        FireElve Fire_Elve = new FireElve();
+                        BattleDeck.Add(Fire_Elve);
+                        break;
+                    case "Troll":
+                        NormalTroll Troll = new NormalTroll();
+                        BattleDeck.Add(Troll);
+                        break;
+                    case "Water_Troll":
+                        WaterTroll Water_Troll = new WaterTroll();
+                        BattleDeck.Add(Water_Troll);
+                        break;
+                    case "Fire_Troll":
+                        FireTroll Fire_Troll = new FireTroll();
+                        BattleDeck.Add(Fire_Troll);
+                        break;
+                    case "Normal_Spell":
+                        NormalSpell Spell = new NormalSpell();
+                        BattleDeck.Add(Spell);
+                        break;
+                    case "Water_Spell":
+                        WaterSpell Water_Spell = new WaterSpell();
+                        BattleDeck.Add(Water_Spell);
+                        break;
+                    case "Fire_Spell":
+                        FireSpell Fire_Spell = new FireSpell();
+                        BattleDeck.Add(Fire_Spell);
+                        break;
+                }
+
             }
             Console.WriteLine("Databsecards");
             Connection.Connection.Close();

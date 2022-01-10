@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game.Cards
 {
-    class WaterOrk : AbstractCard
+    public class WaterOrk : AbstractCard
     {
         public WaterOrk()
         {
@@ -15,6 +15,7 @@ namespace Monster_Card_Game.Cards
             CardDamage = 80;
             CardElement = 2;
             CardType = "Monster";
+            CardResetdmg = 80;
         }
         public void CheckWizzard(AbstractCard Enemy)
         {

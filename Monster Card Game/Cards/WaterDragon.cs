@@ -15,6 +15,7 @@ namespace Monster_Card_Game.Cards
             CardDamage = 100;
             CardElement = 2;
             CardType = "Monster";
+            CardResetdmg = 100;
         }
 
         public void CheckElve(AbstractCard Enemy)

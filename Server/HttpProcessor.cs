@@ -4,7 +4,7 @@ using System.IO;
 using System.Net.Sockets;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+using Npgsql;
 
 namespace Monster_Card_Game
 {
@@ -78,84 +78,106 @@ namespace Monster_Card_Game
             {
                 case "/createuser": // Create an User
 
-                    Database Connection = new Database(); 
-                    User user = Connection.getUserDatabase(list["username"].ToString(), list["password"].ToString());
-                    content = $"User: {list["username"]} was created sucsessfully!";
-                    Connection.Connection.Close();
+                    {
+                        Database Connection = new Database();
+                        User user = Connection.getUserDatabase(list["username"].ToString(), list["password"].ToString());
+                        content = $"User: {list["username"]} was created sucsessfully!";
+                        Connection.Connection.Close();
+                        
+                    }
+                    break;
+
+                case "/delete": // update an User
+
+                    {
+                        Database Connection = new Database();
+                        User user = Connection.getUserDatabase(list["username"].ToString(), list["password"].ToString());
+                        int Check = 0;
+                        string uname = user.UserName;
+                        user.DeleteUser();
+
+                        Database Connection2 = new Database();
+                        NpgsqlCommand query = new NpgsqlCommand($"SELECT name FROM people WHERE name ='{uname}'", Connection2.Connection);
+
+                        NpgsqlDataReader isempty = query.ExecuteReader();
+
+                        if (isempty.HasRows == false)
+                        {
+                            Check = 1;
+                        }
+                        if(Check == 1)
+                        {
+                            content = $"{uname} has been deleted";
+                        }
+
+                        Connection.Connection.Close();
+                    }
                     break;
 
 
                 case "/collection": // create and print the Stack
+
+                    {
+                        Database Connection = new Database();
+                        User user = Connection.getUserDatabase(list["username"].ToString(), list["password"].ToString());
+                        user.BuyPacks();
+                        user.InsertStackIntoDB();
+                        user.printstack();
+                        content = "5 Boosterpacks sucsessfully bought!";
+                        Connection.Connection.Close();
+                    }
+                 
+                    break;
+
+                case "/battledeck": // Create a Battledeck and write it into the DB
+
+                    {
+                        Database Connection = new Database();
+                        User user = Connection.getUserDatabase(list["username"].ToString(), list["password"].ToString());
+
+                        user.CreateStackFromDB();
+
+                        user.createBattledeck(2);
+                        user.createBattledeck(3);
+                        user.createBattledeck(15);
+                        user.createBattledeck(1);
+                        user.createBattledeck(5);
+
+                        content = "Battledeck wurder erfolgreich erstellt!";
+                        user.UpdateUser();
+                        Connection.Connection.Close();
+                    }
                     
-                    Database Connection1 = new Database();
-                    User user1 = Connection1.getUserDatabase(list["username"].ToString(), list["password"].ToString());
-                    user1.BuyPacks();
-                    user1.InsertStackIntoDB();
-                    user1.printstack();
-                    content = "5 Boosterpacks sucsessfully bought!";
-                    Connection1.Connection.Close();
                     break;
 
-                case "/battledeck": // fertig machen
-
-                    Database Connection2 = new Database();
-                    User user2 = Connection2.getUserDatabase(list["username"].ToString(), list["password"].ToString());
-
-                    user2.BuyPacks();
-                    user2.CreateStackFromDB();
-                    user2.createBattledeck(2);
-                    user2.createBattledeck(6);
-                    user2.createBattledeck(15);
-                    user2.createBattledeck(18);
-                    user2.createBattledeck(9);
-
-                    content = "Battledeck wurder erfolgreich erstellt!";
-                    Connection2.Connection.Close();
-                    break;
-
-                case "/buypacks":
-
-                    Database Connection3 = new Database();
-                    User user3 = Connection3.getUserDatabase(list["username"].ToString(), list["password"].ToString());
-
-                    user3.BuyPacks();
-                    user3.InsertStackIntoDB();
-                    user3.printstack();
-
-                    break;
 
                 case "/fight":
 
-                    Database Connection4 = new Database();
-                    Battle Battle = new Battle();
-                    User user4 = Connection4.getUserDatabase(list["username"].ToString(), list["password"].ToString());
-                    User user5 = Connection4.getUserDatabase(list["username1"].ToString(), list["password1"].ToString());
-                    user4.BuyPacks();
-                    user4.InsertStackIntoDB();
-                    user5.BuyPacks();
-                    user5.InsertStackIntoDB();
-                    user4.createBattledeck(2);
-                    user4.createBattledeck(6);
-                    user4.createBattledeck(15);
-                    user4.createBattledeck(18);
-                    user4.createBattledeck(9);
+                    {
+                        Database Connection = new Database();
+                        Battle Battle = new Battle();
+                        User user = Connection.getUserDatabase(list["username"].ToString(), list["password"].ToString());
+                        User user1 = Connection.getUserDatabase(list["username1"].ToString(), list["password1"].ToString());
 
-                    user5.createBattledeck(2);
-                    user5.createBattledeck(6);
-                    user5.createBattledeck(15);
-                    user5.createBattledeck(18);
-                    user5.createBattledeck(9);
+                        user.CreateBattledeckFromDB();
+                        user1.CreateBattledeckFromDB();
 
-                    Battle.StartBattle(user4, user5);
+                        Battle.StartBattle(user, user1);
+                        Connection.UpdateScoreboard();
+                    }
+                   
                     break;
 
                 case "/score":
 
-                    Database Connection5 = new Database();
+                    {
+                        Database Connection = new Database();
 
-                    Connection5.UpdateScoreboard();
+                        Connection.UpdateScoreboard();
 
-                    Connection5.Connection.Close();
+                        Connection.Connection.Close();
+                    }
+                    
                     break;
 
             }

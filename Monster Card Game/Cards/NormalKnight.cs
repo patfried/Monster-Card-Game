@@ -15,6 +15,7 @@ namespace Monster_Card_Game.Cards
             CardDamage = 75;
             CardElement = 0;
             CardType = "Monster";
+            CardResetdmg = 75;
         }
 
         public void CheckWaterSpell(AbstractCard Enemy)

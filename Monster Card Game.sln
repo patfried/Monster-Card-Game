@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31829.152
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monster Card Game", "Monster Card Game\Monster Card Game.csproj", "{528DFDFE-7781-41A5-A4F5-8C4AD9BAB0C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{097C5A0B-E8FD-4A61-A283-BBF33022990A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csproj", "{097C5A0B-E8FD-4A61-A283-BBF33022990A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monster Card Game Tests", "Monster Card Game Tests\Monster Card Game Tests.csproj", "{B10E85E1-F0DA-4829-94E5-18DCEF24C41D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monster Card Game Tests", "Monster Card Game Tests\Monster Card Game Tests.csproj", "{B10E85E1-F0DA-4829-94E5-18DCEF24C41D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
