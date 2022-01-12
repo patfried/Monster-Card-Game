@@ -96,12 +96,12 @@ namespace Monster_Card_Game
                 Enemy.CardDamage *= 2;
             }
 
-            //Knights are well armored so the dragons make half damage
-            if (this.CardClass == "Knight" && Enemy.CardClass == "Dragon")
+            //Fire Knights are well armored so the dragons make half damage
+            if (this.CardName == "Fire_Knight" && Enemy.CardClass == "Dragon")
             {
                 Enemy.CardDamage /= 2;
             }
-            else if (this.CardClass == "Dragon" && Enemy.CardClass == "Knight")
+            else if (this.CardClass == "Dragon" && Enemy.CardClass == "Fire_Knight")
             {
                 this.CardDamage /= 2;
             }
@@ -165,9 +165,6 @@ namespace Monster_Card_Game
                 }
             }
 
-            //############################### EXTRA ###############################//
-
-            //
         }
     }
 }

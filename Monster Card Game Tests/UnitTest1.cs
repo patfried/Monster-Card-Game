@@ -3,6 +3,7 @@ using Monster_Card_Game;
 using Monster_Card_Game.Cards;
 using Npgsql;
 using System.Linq;
+using NpgsqlTypes;
 
 namespace Monster_Card_Game_Tests
 {
@@ -82,15 +83,15 @@ namespace Monster_Card_Game_Tests
 
             Goblin.CheckSpecial(Kraken, false);
 
-            Assert.That(Goblin.CardDamage, Is.EqualTo(100));
+            Assert.That(Goblin.CardDamage, Is.EqualTo(160));
             Assert.That(Kraken.CardDamage, Is.EqualTo(125));
 
         }
 
         [Test]
-        public void KnightsVSDragons()
+        public void FireKnightsVSDragons()
         {
-            ICard Knight = new NormalKnight();
+            ICard Knight = new FireKnight();
             ICard Dragon = new NormalDragon();
 
             Knight.CheckSpecial(Dragon, false);
@@ -188,19 +189,42 @@ namespace Monster_Card_Game_Tests
 
             Database Connection = new Database();
             User user = new User("TestFranz", "123Brücke");
-            int Check = 0;
+            int Checkuser = 0;
             user.DeleteUser();
 
             Database Connection2 = new Database();
-            NpgsqlCommand query = new NpgsqlCommand($"SELECT name FROM people WHERE name ='{user.UserName}'", Connection2.Connection);
+            NpgsqlCommand query = new NpgsqlCommand($"SELECT name FROM people WHERE name =@1", Connection2.Connection);
+            query.Parameters.Add(new NpgsqlParameter("@1", user.UserName));
+            query.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+            query.Prepare();
 
-            NpgsqlDataReader isempty = query.ExecuteReader();
+            NpgsqlDataReader isuserempty = query.ExecuteReader();
 
-            if(isempty.HasRows == false)
+            Database Connection3 = new Database();
+            NpgsqlCommand query1 = new NpgsqlCommand($"SELECT id FROM stack WHERE username =@1", Connection3.Connection);
+            query1.Parameters.Add(new NpgsqlParameter("@1", user.UserName));
+            query1.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+            query1.Prepare();
+
+            NpgsqlDataReader isStackempty = query1.ExecuteReader();
+
+
+            Database Connection4 = new Database();
+            NpgsqlCommand query2 = new NpgsqlCommand($"SELECT id FROM battledeck WHERE username =@1", Connection4.Connection);
+            query2.Parameters.Add(new NpgsqlParameter("@1", user.UserName));
+            query2.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+            query2.Prepare();
+
+        
+            NpgsqlDataReader isbattleempty = query2.ExecuteReader();
+
+            if (isuserempty.HasRows == false)
             {
-                Check = 1;
+                Checkuser = 1;
             }
-            Assert.That(Check, Is.EqualTo(1));
+
+            Assert.That(Checkuser, Is.EqualTo(1));
+            
 
             Connection.Connection.Close();
         }
@@ -220,8 +244,12 @@ namespace Monster_Card_Game_Tests
 
             Database Connection2 = new Database();
 
-            var sql = $"SELECT * FROM people WHERE name ='{user.UserName}'";
+            var sql = $"SELECT * FROM people WHERE name =@1";
             using var query = new NpgsqlCommand(sql, Connection2.Connection);
+            query.Parameters.Add(new NpgsqlParameter("@1", user.UserName));
+            query.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+            query.Prepare();
+
             using NpgsqlDataReader Reader = query.ExecuteReader();
             
             int coins, elo, matcheswon, matcheslost;
@@ -238,13 +266,13 @@ namespace Monster_Card_Game_Tests
 
                 
 
-                user = new User(user.UserName, user.UserPassword, coins, elo, matcheswon, matcheslost, wlratio);
+                user = new User(user.UserName, user.UserPassword, coins, elo, matcheswon, matcheslost);
             }
             
             Assert.That(user.Elo, Is.EqualTo(user.Elo));
             Assert.That(user.MatchesWon, Is.EqualTo(user.MatchesWon));
             Assert.That(user.MatchesLost, Is.EqualTo(user.MatchesLost));
-            Assert.That(user.WinLossRatio, Is.EqualTo(user.WinLossRatio));
+            
             user.DeleteUser();
 
             Connection.Connection.Close();
@@ -330,6 +358,8 @@ namespace Monster_Card_Game_Tests
 
 
             Assert.That(Result, Is.EqualTo("Player1 won!"));
+            Assert.That(user.Elo, Is.EqualTo(103));
+            Assert.That(user2.Elo, Is.EqualTo(95));
 
 
             user.DeleteUser();
@@ -355,7 +385,8 @@ namespace Monster_Card_Game_Tests
 
 
             Assert.That(Result, Is.EqualTo("Player2 won!"));
-
+            Assert.That(user.Elo, Is.EqualTo(95));
+            Assert.That(user2.Elo, Is.EqualTo(103));
 
             user.DeleteUser();
             user2.DeleteUser();
@@ -380,7 +411,8 @@ namespace Monster_Card_Game_Tests
 
 
             Assert.That(Result, Is.EqualTo("Player1 won! Elemental"));
-
+            Assert.That(user.Elo, Is.EqualTo(103));
+            Assert.That(user2.Elo, Is.EqualTo(95));
 
             user.DeleteUser();
             user2.DeleteUser();
@@ -405,7 +437,8 @@ namespace Monster_Card_Game_Tests
 
 
             Assert.That(Result, Is.EqualTo("Player2 won! Elemental"));
-
+            Assert.That(user.Elo, Is.EqualTo(95));
+            Assert.That(user2.Elo, Is.EqualTo(103));
 
             user.DeleteUser();
             user2.DeleteUser();

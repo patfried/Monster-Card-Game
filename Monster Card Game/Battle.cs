@@ -10,7 +10,7 @@ namespace Monster_Card_Game
     {
         int MaxRounds = 100;
         int PlayedRounds = 0;
-        bool GameOver = false;
+       
 
         public string StartBattle(User Player1, User Player2)
         {
@@ -56,7 +56,7 @@ namespace Monster_Card_Game
                     {
                         Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player2Card, true);
                         winner = "Its a Draw!";
-                        GameOver = true;
+                        
                     }
 
                     
@@ -64,7 +64,7 @@ namespace Monster_Card_Game
                     if (Player1tmp.BattleDeck.Count == 0)
                     {
                         Console.WriteLine("Spiel vorbei Spieler 2 hat gewonnen");
-                        GameOver = true;
+                        
                         Player2.Elo += 3;
                         Player2.MatchesWon++;
                         Player1.Elo -= 5;
@@ -78,7 +78,7 @@ namespace Monster_Card_Game
                     else if (Player2tmp.BattleDeck.Count == 0)
                     {
                         Console.WriteLine("Spiel vorbei Spieler 1 hat gewonnen");
-                        GameOver = true;
+                        
                         Player1.Elo += 3;
                         Player1.MatchesWon++;
                         Player2.Elo -= 5;
@@ -122,7 +122,7 @@ namespace Monster_Card_Game
                         {
                             Battlelog(Player1tmp, Player2tmp, Player1Card, Player2Card, Player2Card, true);
                             winner = "Draw Elemental";
-                            GameOver = true;
+                            
 
                         }
 
@@ -131,7 +131,7 @@ namespace Monster_Card_Game
                         if (Player1tmp.BattleDeck.Count == 0)
                         {
                             Console.WriteLine("Spiel vorbei Spieler 2 hat gewonnen");
-                            GameOver = true;
+                            
                             Player2.Elo += 3;
                             Player2.MatchesWon++;
                             Player1.Elo -= 5;
@@ -145,7 +145,7 @@ namespace Monster_Card_Game
                         else if (Player2tmp.BattleDeck.Count == 0)
                         {
                             Console.WriteLine("Spiel vorbei Spieler 1 hat gewonnen");
-                            GameOver = true;
+                            
                             Player1.Elo += 3;
                             Player1.MatchesWon++;
                             Player2.Elo -= 5;
@@ -161,8 +161,11 @@ namespace Monster_Card_Game
 
             }
 
-            Player1.UpdateUser();
-            Player2.UpdateUser();
+            Console.WriteLine($"Rounds palyed:{PlayedRounds}");
+            if(PlayedRounds == 100)
+            {
+                Console.WriteLine(winner);
+            }
             return winner;
 
         }

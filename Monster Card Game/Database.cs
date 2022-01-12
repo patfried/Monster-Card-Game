@@ -1,11 +1,9 @@
 ﻿using Npgsql;
+using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Monster_Card_Game
@@ -75,24 +73,28 @@ namespace Monster_Card_Game
 
 
 
-        public User getUserDatabase(string Username, string Password)
+        public User getUserDatabase(string Username, string Password) // Create new User or Login User
         {
 
-            var sql = $"SELECT * FROM people WHERE name = '{Username}'";
+            var sql = $"SELECT * FROM people WHERE name = @1";
             using var query = new NpgsqlCommand(sql, Connection);
+            query.Parameters.Add(new NpgsqlParameter("@1", Username));
+            query.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+            query.Prepare();
+            
             using NpgsqlDataReader Reader = query.ExecuteReader();
             
             User oldUser = null;
             bool alreadyexist = Reader.HasRows; // check if column is empty
 
 
-            if (alreadyexist)
+            if (alreadyexist == true)
             {
-                Console.WriteLine($"User {Username} exists!");
+                Console.WriteLine($"User {Username} exists and will be loged in!");
 
                 string name, password;
                 int coins, elo, matcheswon, matcheslost;
-                double wlratio;
+                
 
                 while(Reader.Read()) // As long as the Reader is reading entrys
                 {
@@ -102,11 +104,11 @@ namespace Monster_Card_Game
                     elo = Reader.GetInt32(4);
                     matcheswon = Reader.GetInt32(5);
                     matcheslost = Reader.GetInt32(6);
-                    wlratio = Reader.GetDouble(7);
+                   
 
                     name = string.Join("", name.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
 
-                    oldUser = new User(name, password, coins, elo, matcheswon, matcheslost, wlratio);
+                    oldUser = new User(name, password, coins, elo, matcheswon, matcheslost);
                 }
 
                 return oldUser;

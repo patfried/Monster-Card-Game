@@ -14,10 +14,10 @@ namespace Monster_Card_Game
         {
             CardClass = "Goblin";
             CardName = "Normal_Goblin";
-            CardDamage = 50;
+            CardDamage = 80;
             CardElement = 0;
             CardType = "Monster";
-            CardResetdmg = 50;
+            CardResetdmg = 80;
 
         }
 

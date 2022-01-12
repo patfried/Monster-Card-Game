@@ -9,14 +9,18 @@ namespace Monster_Card_Game
         static void Main(string[] args)
         {
             User Pole = new User("Patrick","12345");
-            //User Enemy = new User("Kevin","Klauber");
+            User Enemy = new User("Kevin","Klauber");
             Battle Battle = new Battle();
             Database db = new Database();
-
-            Pole.CreateStackFromDB();
-            Pole.printstack();
-
+            
             //Pole.BuyPacks();
+            //Enemy.BuyPacks();
+            //Pole.CreateBattledeck(1);
+            //Enemy.CreateBattledeck(2);
+
+            //Pole.printstack();
+
+            
             //Pole.InsertStackIntoDB();
             //Enemy.BuyPacks();
             //Enemy.InsertStackIntoDB();

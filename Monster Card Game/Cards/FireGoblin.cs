@@ -12,10 +12,10 @@ namespace Monster_Card_Game.Cards
         {
             CardClass = "Goblin";
             CardName = "Fire_Goblin";
-            CardDamage = 50;
+            CardDamage = 80;
             CardElement = 1;
             CardType = "Monster";
-            CardResetdmg = 50;
+            CardResetdmg = 80;
 
         }
         public void CheckDragon(AbstractCard Enemy)

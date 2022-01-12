@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Monster_Card_Game.Cards
 {
-    class FireKnight : AbstractCard
+    public class FireKnight : AbstractCard
     {
         public FireKnight()
         {

@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Npgsql;
+using NpgsqlTypes;
 
 namespace Monster_Card_Game
 {
@@ -76,7 +77,7 @@ namespace Monster_Card_Game
 
             switch(this.Path)
             {
-                case "/createuser": // Create an User
+                case "/createuser": // create an User
 
                     {
                         Database Connection = new Database();
@@ -87,7 +88,7 @@ namespace Monster_Card_Game
                     }
                     break;
 
-                case "/delete": // update an User
+                case "/delete": // delete an User
 
                     {
                         Database Connection = new Database();
@@ -97,7 +98,10 @@ namespace Monster_Card_Game
                         user.DeleteUser();
 
                         Database Connection2 = new Database();
-                        NpgsqlCommand query = new NpgsqlCommand($"SELECT name FROM people WHERE name ='{uname}'", Connection2.Connection);
+                        NpgsqlCommand query = new NpgsqlCommand($"SELECT name FROM people WHERE name =@1", Connection2.Connection);
+                        query.Parameters.Add(new NpgsqlParameter("@1", uname));
+                        query.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+                        query.Prepare();
 
                         NpgsqlDataReader isempty = query.ExecuteReader();
 
@@ -138,12 +142,12 @@ namespace Monster_Card_Game
                         user.CreateStackFromDB();
 
                         user.createBattledeck(2);
-                        user.createBattledeck(3);
-                        user.createBattledeck(15);
-                        user.createBattledeck(1);
+                        user.createBattledeck(13);
+                        user.createBattledeck(10);
+                        user.createBattledeck(8);
                         user.createBattledeck(5);
 
-                        content = "Battledeck wurder erfolgreich erstellt!";
+                        content = "Battledeck was sucsessfully created!";
                         user.UpdateUser();
                         Connection.Connection.Close();
                     }
@@ -151,7 +155,7 @@ namespace Monster_Card_Game
                     break;
 
 
-                case "/fight":
+                case "/fight": // fight
 
                     {
                         Database Connection = new Database();
@@ -168,7 +172,7 @@ namespace Monster_Card_Game
                    
                     break;
 
-                case "/score":
+                case "/score": // Show the scoreboard
 
                     {
                         Database Connection = new Database();
@@ -187,7 +191,7 @@ namespace Monster_Card_Game
 
             Console.WriteLine();
             WriteLine(writer, "HTTP/1.1 200 OK");
-            WriteLine(writer, "Server: My simple HttpServer");
+            WriteLine(writer, "Server: Monster Trading Game");
             WriteLine(writer, $"Current Time: {DateTime.Now}");
             WriteLine(writer, $"Content-Length: {content.Length}");
             WriteLine(writer, "Content-Type: text/html; charset=utf-8");

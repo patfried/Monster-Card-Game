@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Monster_Card_Game.Cards;
 using Npgsql;
+using NpgsqlTypes;
 
 namespace Monster_Card_Game
 {
@@ -35,7 +34,7 @@ namespace Monster_Card_Game
             InsertUserintoDB();
         }
 
-        public User(string Username, string Password, int Coins, int Elodb, int matcheswon,int matcheslost, double wlratio) // Used when Login User in 
+        public User(string Username, string Password, int Coins, int Elodb, int matcheswon,int matcheslost) // Used when Login User in 
         {
             
             UserName = Username;
@@ -44,7 +43,6 @@ namespace Monster_Card_Game
             Elo = Elodb;
             MatchesWon = matcheswon;
             MatchesLost = matcheslost;
-            WinLossRatio = wlratio;
             CardCollection = new List<ICard>();
             BattleDeck = new List<ICard>();
 
@@ -230,8 +228,11 @@ namespace Monster_Card_Game
         {
             Database Connection = new Database();
 
-            var sql = $"SELECT * FROM people WHERE name = '{this.UserName}'";
+            var sql = $"SELECT * FROM people WHERE name = @1";
             using var query = new NpgsqlCommand(sql, Connection.Connection);
+            query.Parameters.Add(new NpgsqlParameter("@1", UserName));
+            query.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+            query.Prepare();
 
             bool alreadyexist = query.ExecuteReader().HasRows;
 
@@ -262,12 +263,12 @@ namespace Monster_Card_Game
                 Console.WriteLine("User already exists!");
             }
         }
-        
+
         public void UpdateUser()
         {
             Database Connection = new Database();
 
-            var sql = $" UPDATE people SET name=@1, password=@2, coins=@3, elo=@4, matcheswon=@5, matcheslost=@6  WHERE name='{this.UserName}'"; //prepare / TODO UserNamen ersetzen da er sonst nach dem neuen namen Eintrag sucht der nicht vorhanden ist
+            var sql = $" UPDATE people SET name=@1, password=@2, coins=@3, elo=@4, matcheswon=@5, matcheslost=@6  WHERE name= @7"; //prepare 
             using var query = new NpgsqlCommand(sql, Connection.Connection);
 
             query.Parameters.AddWithValue("@1", this.UserName);                          // fill in 
@@ -276,30 +277,60 @@ namespace Monster_Card_Game
             query.Parameters.AddWithValue("@4", this.Elo);
             query.Parameters.AddWithValue("@5", this.MatchesWon);
             query.Parameters.AddWithValue("@6", this.MatchesLost);
-            
+            query.Parameters.AddWithValue("@7", this.UserName);
+
             query.Prepare();
 
             query.ExecuteNonQuery();                                                     //execute
 
             Connection.Connection.Close();
         }
-        
+
         public void DeleteUser()
         {
             Database Connection = new Database();
 
-            var sql = $"SELECT * FROM people WHERE name = '{this.UserName}'";
+            var sql = $"SELECT * FROM people WHERE name = @1";
             using var query = new NpgsqlCommand(sql, Connection.Connection);
+            query.Parameters.Add(new NpgsqlParameter("@1", UserName));
+            query.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+            query.Prepare();
 
             bool doesexist = query.ExecuteReader().HasRows;
 
             if(doesexist)
             {
+                //Delete User
                 Database newConnection = new Database();
-                sql = $" DELETE FROM people WHERE name = '{this.UserName}'"; 
+                sql = $" DELETE FROM people WHERE name = @2"; 
                 using var newquery = new NpgsqlCommand(sql, newConnection.Connection);
+                newquery.Parameters.Add(new NpgsqlParameter("@2", UserName));
+                newquery.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+                newquery.Prepare();
+
                 newquery.ExecuteNonQuery();
                 newConnection.Connection.Close();
+
+                //Delete Stack form User
+                Database newConnection1 = new Database();
+                sql = $" DELETE FROM stack WHERE username = @2";
+                using var newquery1 = new NpgsqlCommand(sql, newConnection1.Connection);
+                newquery1.Parameters.Add(new NpgsqlParameter("@2", UserName));
+                newquery1.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+                newquery1.Prepare();
+                
+                newquery1.ExecuteNonQuery();
+                newConnection1.Connection.Close();
+
+                Database newConnection2 = new Database();
+                sql = $" DELETE FROM battledeck WHERE username = @2";
+                using var newquery2 = new NpgsqlCommand(sql, newConnection2.Connection);
+                newquery2.Parameters.Add(new NpgsqlParameter("@2", UserName));
+                newquery2.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+                newquery2.Prepare();
+
+                newquery2.ExecuteNonQuery();
+                newConnection2.Connection.Close();
             }
             else
             {
@@ -308,7 +339,7 @@ namespace Monster_Card_Game
             Connection.Connection.Close();
         }
         
-        public void InsertStackIntoDB()
+        public void InsertStackIntoDB() 
         {
             
             foreach (ICard Collection in CardCollection)
@@ -360,8 +391,12 @@ namespace Monster_Card_Game
         {
             
             Database Connection = new Database();
-            var sql = $"SELECT cardname FROM stack WHERE username='{this.UserName}'";
+            var sql = $"SELECT cardname FROM stack WHERE username = @1";
             using var query = new NpgsqlCommand(sql, Connection.Connection);
+            query.Parameters.Add(new NpgsqlParameter("@1", UserName));
+            query.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+            query.Prepare();
+
             using NpgsqlDataReader Reader = query.ExecuteReader();
             List<string> tmpCards = new List<string>();
             string tmpname;
@@ -497,8 +532,12 @@ namespace Monster_Card_Game
         {
 
             Database Connection = new Database();
-            var sql = $"SELECT cardname FROM battledeck WHERE username='{this.UserName}'";
+            var sql = $"SELECT cardname FROM battledeck WHERE username = @1";
             using var query = new NpgsqlCommand(sql, Connection.Connection);
+            query.Parameters.Add(new NpgsqlParameter("@1", UserName));
+            query.Parameters[0].NpgsqlDbType = NpgsqlDbType.Text;
+            query.Prepare();
+
             using NpgsqlDataReader Reader = query.ExecuteReader();
             List<string> tmpCards = new List<string>();
             string tmpname;
